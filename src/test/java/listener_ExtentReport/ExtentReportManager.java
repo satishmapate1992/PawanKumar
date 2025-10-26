@@ -56,16 +56,30 @@ public class ExtentReportManager implements ITestListener {
 		test.log(Status.FAIL, result.getName()+" Test case failed");
 		test.log(Status.FAIL, result.getThrowable().getMessage()+" Test case failed");
 
-        // If WebDriver is available, capture screenshot
-		 Object driverObject = result.getTestContext().getAttribute("WebDriver");
-		 if (driverObject instanceof WebDriver) {
-		        driver = (WebDriver) driverObject;
-		        String screenshotPath = TakeScreenShot.captureScreenShot(driver, result.getMethod().getMethodName());
-		        test.addScreenCaptureFromPath(screenshotPath);
-		    } else {
-		        System.out.println("WebDriver not found in context.");
-		    }
-        
+	    // Retrieve WebDriver from TestNG context (set in TestClass.setup)
+	    Object driverObj = null;
+	    try {
+	        driverObj = result.getTestContext().getAttribute("driver");
+	    } catch (Exception e) {
+	        // ignore - no context available
+	    }
+
+	    if (driverObj instanceof WebDriver) {
+	        driver = (WebDriver) driverObj;
+	        try {
+	            String screenshotPath = TakeScreenShot.captureScreenShot(driver, result.getMethod().getMethodName());
+	            if (screenshotPath != null) {
+	                test.addScreenCaptureFromPath(screenshotPath);
+	            } else {
+	                test.log(Status.INFO, "Screenshot path was null");
+	            }
+	        } catch (Exception e) {
+	            test.log(Status.WARNING, "Failed to capture screenshot: " + e.getMessage());
+	        }
+	    } else {
+	        test.log(Status.INFO, "WebDriver instance not available in test context; skipping screenshot.");
+	    }
+
 	}
 
 	public void onTestSkipped(ITestResult result) {
