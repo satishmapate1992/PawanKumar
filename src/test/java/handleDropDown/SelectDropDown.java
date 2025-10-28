@@ -1,6 +1,5 @@
 package handleDropDown;
 
-import java.lang.classfile.ClassFile.Option;
 import java.time.Duration;
 import java.util.List;
 
@@ -24,7 +23,21 @@ public class SelectDropDown {
 		//sel.selectByVisibleText("Japan");
 		//sel.selectByValue("brazil");
 		//sel.selectByIndex(5);
-		sel.selectByContainsVisibleText("Ind");
+		// Select the first option that contains the given substring ("Ind")
+		String substringToMatch = "Ind";
+		boolean selected = false;
+		List<WebElement> options = sel.getOptions();
+		for (WebElement opt : options) {
+			String txt = opt.getText();
+			if (txt != null && txt.contains(substringToMatch)) {
+				sel.selectByVisibleText(txt);
+				selected = true;
+				break;
+			}
+		}
+		if (!selected) {
+			System.out.println("No option contains: " + substringToMatch);
+		}
 		
 		List<WebElement> option = sel.getOptions();
 		int size= option.size();

@@ -1,0 +1,26 @@
+Test Case ID,Title,Purpose,Preconditions,Test Data,Steps,Expected Result,Pass Criteria,Notes
+"TC-01","Verify the site logo is displayed","Confirm the page shows the expected logo image.","Browser installed (Chrome/Firefox/Edge); Test environment URL available; You have the page URL to test.","browser=Chrome (or other); url=provided site URL","1. Open the chosen browser.
+2. Navigate to the provided URL.
+3. Locate the page logo (image with expected branding/alt text).
+4. Verify the logo is visible on the page.","The logo image is visible and clearly rendered on the page.","Pass: Logo is visible; Fail: Logo missing or broken.","Automation mapping: corresponds to automated testLogo (XPath used: //img[@alt='geeksforgeeks'])."
+"TC-02","Verify the current page URL equals the expected URL","Validate the browser address bar contains the exact expected URL.","Browser open with the page loaded.","Expected URL: https://www.geeksforgeeks.org/software-testing/automation-testing-software-","1. After page load, open the browser address bar.
+2. Copy the full current URL.
+3. Compare actual URL to the expected string (character-by-character).","The actual URL equals the expected URL exactly.","Pass: exact match; Fail: any difference (domain, path, query or trailing chars).","Automation mapping: corresponds to automated testURL."
+"TC-03","Verify dependency behavior and skipping of dependent test","Confirm a dependent test is skipped if its dependency fails.","TestNG test suite available; tests testURL and testSkip present.","Use same test suite/run containing testURL and testSkip","Scenario A (dependency passes):
+1. Ensure testURL will pass.
+2. Run the test suite.
+3. Observe execution order and status of testURL then testSkip.
+Scenario B (dependency fails):
+1. Make testURL fail (change expected URL or target a different URL).
+2. Run the same suite.
+3. Observe TestNG results for testURL (fail) and testSkip (should be SKIPPED).","Scenario A: testURL passes and testSkip runs.
+Scenario B: testURL fails and testSkip is reported as SKIPPED.","Pass: TestNG marks testSkip as SKIPPED when testURL fails and executes it when testURL passes.","Automation mapping: corresponds to automated testSkip (dependsOnMethods = {\"testURL\"})."
+"TC-04","Verify Extent report attaches screenshots when a test fails","Confirm the Extent listener retrieves the driver and attaches a screenshot to the HTML report on failure.","ExtentReportManager listener registered; TakeScreenShot helper exists; screenshots folder writable.","Intentionally fail a test (e.g., make testURL fail)","1. Intentionally make chosen test fail.
+2. Run the test suite.
+3. After run, open project screenshots folder and check for new PNG (testName_timestamp.png).
+4. Open the latest Extent HTML report in the reports folder.
+5. Locate the failed test and confirm a screenshot is attached (thumbnail/link) and opens correctly.
+6. Verify the report shows the failure message/stack trace.","A screenshot file exists in screenshots folder and is attached to the failed test in the Extent report.","Pass: Screenshot created and attached; Fail: No screenshot or not attached.","If listener logs that WebDriver not available, confirm context.setAttribute(\"driver\", driver) executed and listener is registered."
+"TC-05","Verify browser/process cleanup after test run","Ensure the test teardown quits the browser and no orphan driver/browser processes remain.","Test run completed that reached @AfterClass teardown code.","N/A","1. After test run completes, check for open browser windows started by the test.
+2. On Windows, open Task Manager and inspect for lingering chromedriver/geckodriver/edgedriver processes.
+3. Confirm browser window(s) are closed.","All browser windows and driver processes started by the test are terminated.","Pass: No lingering browser or driver processes; Fail: Browser/driver processes remain.","Automation mapping: corresponds to @AfterClass tearDown method that calls driver.quit()."

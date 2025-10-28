@@ -3,15 +3,14 @@
 <suite name="Failed suite [Default suite]" guice-stage="DEVELOPMENT">
   <test thread-count="5" name="Default test(failed)">
     <classes>
-      <class name="listener_ExtentReport.TestClass">
+      <class name="pageObjectModel.LoginPageTest">
         <methods>
-          <include name="testLogo"/>
-          <include name="testSkip"/>
-          <include name="testURL"/>
           <include name="tearDown"/>
-          <include name="setup"/>
+          <include name="demoCredentialsVisibleTest"/>
+          <include name="setUp"/>
+          <include name="validLoginTest"/>
         </methods>
-      </class> <!-- listener_ExtentReport.TestClass -->
+      </class> <!-- pageObjectModel.LoginPageTest -->
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->
